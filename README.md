@@ -18,3 +18,11 @@ A couple things would need to be changed in the python script:
 ####Important env variables to set up
 - ES_URL: location of elasticsearch. I.e: http://test.com[:portNum for ES, 9200]
 - ES_INDEX: name of ES index. i.e: rpi_temps
+
+TODOS:
+- mock test api call to ES
+- set up docker 
+- set up CI/CD
+- write better documentation/ include sources i used
+- rewrite to golang
+- find weatherproof/outdoor assembly for the pi to sit outside
