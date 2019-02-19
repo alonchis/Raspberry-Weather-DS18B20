@@ -12,8 +12,8 @@ import contants
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
 
-ES_INDEX = os.environ["ES_INDEX"]
-es = elasticsearch.Elasticsearch([os.environ["ES_URL"]])
+ES_INDEX = os.environ['ES_INDEX']
+ES_URL = elasticsearch.Elasticsearch([os.environ['ES_URL']])
 
 ds18b20_base_dir = '/sys/bus/w1/devices/'
 ds18b20_device_folder = glob.glob(ds18b20_base_dir + '28*')[0]
