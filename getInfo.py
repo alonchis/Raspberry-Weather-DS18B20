@@ -13,19 +13,22 @@ os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
 
 ES_INDEX = os.environ['ES_INDEX']
-ES_URL = elasticsearch.Elasticsearch([os.environ['ES_URL']])
+es = elasticsearch.Elasticsearch([os.environ['ES_URL']])
 
 ds18b20_base_dir = '/sys/bus/w1/devices/'
 ds18b20_device_folder = glob.glob(ds18b20_base_dir + '28*')[0]
 ds18b20_device_file = ds18b20_device_folder + '/w1_slave'
 
-#todo extract to function, write unit test
+# todo extract to function, write unit test
 # Try to grab a sensor reading.  Use the read_retry method which will retry up
 # to 15 times to get a sensor reading (waiting 2 seconds between each retry).
 humidity, temperature = Adafruit_DHT.read_retry(contants.SENSOR, contants.PIN)
 
 # Un-comment the line below to convert the temperature to Fahrenheit.
-temperature = temperature * 9.0 / 5.0 + 32
+try:
+    temperature = temperature * 9.0 / 5.0 + 32
+except Exception:
+    temperature = -273.15
 
 
 # Note that sometimes you won't get a reading and
@@ -33,7 +36,6 @@ temperature = temperature * 9.0 / 5.0 + 32
 # guarantee the timing of calls to read the sensor).
 # If this happens try again!
 def get_readings_dht22():
-    try:
     if humidity is not None and temperature is not None:
         print('DHT22 readings: Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(temperature, humidity))
         result = "humidity = {}, temperature = {}".format(humidity, temperature)
@@ -81,7 +83,3 @@ print(datetime.datetime.now().isoformat())
 print("waterproof sensor reads ", read_temp_results)
 print("DHT22 temp = ", temperature, " humidity = ", humidity)
 print(build_and_send_payload(temperature, humidity, read_temp_results))
-
-
-
-
