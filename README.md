@@ -20,6 +20,7 @@ A couple things would need to be changed in the python script:
 - ES_INDEX: name of ES index. i.e: rpi_temps
 
 TODOS:
+- [ ] fix dht22 sensor crash issue
 - [ ] find better solution for cronjob env variables
 - [ ] mock test api call to ES
 - [ ] set up docker 
