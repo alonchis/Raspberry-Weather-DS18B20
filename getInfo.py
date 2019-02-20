@@ -33,6 +33,7 @@ temperature = temperature * 9.0 / 5.0 + 32
 # guarantee the timing of calls to read the sensor).
 # If this happens try again!
 def get_readings_dht22():
+    try:
     if humidity is not None and temperature is not None:
         print('DHT22 readings: Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(temperature, humidity))
         result = "humidity = {}, temperature = {}".format(humidity, temperature)
