@@ -1,12 +1,13 @@
 import datetime
 import glob
+import json
 import os
 import subprocess
 import sys
 import time
 import Adafruit_DHT
 import elasticsearch
-
+import requests
 import contants
 
 os.system('modprobe w1-gpio')
@@ -19,6 +20,8 @@ ds18b20_base_dir = '/sys/bus/w1/devices/'
 ds18b20_device_folder = glob.glob(ds18b20_base_dir + '28*')[0]
 ds18b20_device_file = ds18b20_device_folder + '/w1_slave'
 
+OPENWEATHER_URL = 'https://api.openweathermap.org/data/2.5/weather?id=4893811&APPID=' + os.environ['OW_API_KEY'] + '&units=imperial'
+
 # todo extract to function, write unit test
 # Try to grab a sensor reading.  Use the read_retry method which will retry up
 # to 15 times to get a sensor reading (waiting 2 seconds between each retry).
@@ -30,6 +33,15 @@ try:
 except Exception:
     temperature = -273.15
 
+
+def get_outside_temp():
+    resp = requests.get(OPENWEATHER_URL)
+    if resp.ok:
+        response = json.loads(resp.text)
+        result = {'city': response['name'], 'humidity': response['main']['humidity'], 'temp': response['main']['temp']}
+        return result
+    else:
+        return None
 
 # Note that sometimes you won't get a reading and
 # the results will be null (because Linux can't
@@ -73,7 +85,8 @@ def build_and_send_payload(dht22_temp, dht22_humid, DS18B20_readings):
         '@timestamp': datetime.datetime.utcnow(),
         'temp probe temp': DS18B20_readings,
         'DHT22 temp': dht22_temp,
-        'DHT22 humidity': dht22_humid
+        'DHT22 humidity': dht22_humid,
+        'outside temp': get_outside_temp()
     })
     return result
 
