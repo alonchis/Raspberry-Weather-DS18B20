@@ -6,9 +6,9 @@ import sys
 import time
 import Adafruit_DHT
 import elasticsearch
-
+import json
 import contants
-
+import requests
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
 
@@ -30,6 +30,17 @@ try:
 except Exception:
     temperature = -273.15
 
+
+def get_outside_temp():
+    r = requests.get('https://api.openweathermap.org/data/2.5/weather?id=4893811&APPID=' + os.environ['OW_API_KEY'] + '&units=imperial')
+    print(r.json)
+    if r.status_code == requests.codes.ok:
+        j = json.loads(r.text)
+        
+        print(j)
+        print(j['main'])
+    else: 
+        print("error code ", r.status_code)
 
 # Note that sometimes you won't get a reading and
 # the results will be null (because Linux can't
@@ -77,6 +88,9 @@ def build_and_send_payload(dht22_temp, dht22_humid, DS18B20_readings):
     })
     return result
 
+
+
+get_outside_temp()
 
 read_temp_results = read_temp()
 print(datetime.datetime.now().isoformat())
