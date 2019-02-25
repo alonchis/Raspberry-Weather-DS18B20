@@ -9,18 +9,24 @@ wanted to setup a weather station on a raspberry pi using the sensors DS18B20 (w
 
 A difference in this project from Kodermac's is that im sending the readings to an elastic stack, instead of mysql/wordpress. why? because at the time, im working on an ELK project and i wanted some more experience. 
 
+As of now I'm keeping the Pi/sensors in my room until I find an weatherproof solution to put it outside. why include it? because I thought it would be neat to compare the inside/outside temperatures. 
+
+Also, I think I figured out the DHT22 sensor issue: the sensor is actually calles AM3202 (which contains a DHT22 sensor inside). main difference is housing and included resistors. I followed wiring instructions for DHT22 and the sensor crashed after a while. Now I've rewired following the AM3202 instructions and it seems to work. will monitor for uptime...
 
 #### How to run:
 A couple things would need to be changed in the python script: 
 - Change the elasticsearch host ip
 - Set up a cron job. I tested every minute to start collecting documents in ES by setting the cron job (crontab -e) to * * * * * {{path to project directory}}/getInfo.py. in the future i plan on changing this to maybe every 5 minutes?
   - NOTE: I've since discovered the pains of running python scripts as cron jobs. the issue is that i had sourced env variables in a file on my home dir, and running the script would run whenever i manually ran it. cron is a different user and runs under a different environment. I hotfixed this by including the env variables on the cron job i.e: * * * * * ES_INDEX="some_index" ES_URL="some url" python3 /path/to/script	
+
 #### Important env variables to set up
 - ES_URL: location of elasticsearch. I.e: http://test.com[:portNum for ES, 9200]
 - ES_INDEX: name of ES index. i.e: rpi_temps
+- OW_API_KEY: api key for openweathermaps.org
 
 TODOS:
-- [ ] fix dht22 sensor crash issue
+- [x] include outside weather temp and; add test;
+- [ ] fix dht22 sensor crash issue (fixed)?
 - [ ] find better solution for cronjob env variables
 - [ ] mock test api call to ES
 - [ ] set up docker 
