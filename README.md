@@ -35,3 +35,4 @@ TODOS:
 - [ ] write better documentation/ include sources i used
 - [ ] rewrite to golang
 - [ ] find weatherproof/outdoor assembly for the pi to sit outside
+- [ ] add a try/catch to check if OW_API_KEY is empty to skip this step if the value is empty
