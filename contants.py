@@ -1,2 +1,2 @@
 SENSOR = 22
-PIN= 3
+PIN= 13 
