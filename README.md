@@ -5,13 +5,15 @@ forked from https://github.com/peterkodermac/Raspberry-Weather-DS18B20
 This code helps you read temperatures along with humidity and save both in your database. You need to configure your weather station in order to use this code. Read more on www.raspberryweather.com
 
 #### Purpose:
-wanted to setup a weather station on a raspberry pi using the sensors DS18B20 (weatherproof probe) and a DHT22 (moisture and temperature probe, non waterproof). The problem I found was that the DS18B20 probe is read from a file in /something/devices/28-0000000/w1-slave, and the DHT22 readings come from a python script. im sure there is a way to read DHT22 from a file just like the other probe but this is what worked from me. I found another python script somewhere else (TODO: citation needed) som by frankensteining these two scripts, I managed to make this work. 
+I wanted to setup a weather station on a raspberry pi using the sensors DS18B20 (weatherproof probe) and a DHT22 (moisture and temperature probe, non waterproof). The problem I found was that the DS18B20 probe readings come from a file in /sys/bus/devices/28-0000000/w1-slave, and the DHT22 readings come from a python script. im sure there is a way to read DHT22 from a file too , or viceversa, but this is what worked from me. I found another python script somewhere else (TODO: citation needed) so I frankenstein'd these two scripts and it works! 
 
-A difference in this project from Kodermac's is that im sending the readings to an elastic stack, instead of mysql/wordpress. why? because at the time, im working on an ELK project and i wanted some more experience. 
+Why not just follow Kodermac's excellent write up on making this work?
+The main difference in this project from Kodermac's is that im sending the readings to an elastic stack, whereas Kodermac uses  mysql/wordpress to store/view the results. 
+But why elasticsearch? because at the time, I was working on an ELK project and I wanted some more experience with it. 
 
-As of now I'm keeping the Pi/sensors in my room until I find an weatherproof solution to put it outside. why include it? because I thought it would be neat to compare the inside/outside temperatures. 
+As of now I'm keeping the Pi/sensors in my room until I find an weatherproof solution to put it outside, so the script also fetches temperature from openweather.org. Until I figure out a permanent outdoor solution, the script sends both temps to elasticsearch.
 
-Also, I think I figured out the DHT22 sensor issue: the sensor is actually calles AM3202 (which contains a DHT22 sensor inside). main difference is housing and included resistors. I followed wiring instructions for DHT22 and the sensor crashed after a while. Now I've rewired following the AM3202 instructions and it seems to work. will monitor for uptime...
+Also, I've found a weird bug with the DHT22 sensor where it would stop recording after a while: the sensor is actually called AM3202 (which contains a DHT22 sensor inside). main difference is housing and included resistors. I followed wiring instructions for DHT22 and the sensor crashed after a while. Now I've rewired following the AM3202 instructions and it seems to work. will monitor for uptime...
 
 #### How to run:
 A couple things would need to be changed in the python script: 
