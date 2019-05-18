@@ -25,7 +25,7 @@ OPENWEATHER_URL = 'https://api.openweathermap.org/data/2.5/weather?id=4893811&AP
 # todo extract to function, write unit test
 # Try to grab a sensor reading.  Use the read_retry method which will retry up
 # to 15 times to get a sensor reading (waiting 2 seconds between each retry).
-humidity, temperature = Adafruit_DHT.read_retry(contants.SENSOR, contants.PIN)
+humidity, temperature = Adafruit_DHT.read_retry(22, 26)
 
 # Un-comment the line below to convert the temperature to Fahrenheit.
 try:
