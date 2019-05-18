@@ -16,6 +16,8 @@ As of now I'm keeping the Pi/sensors in my room until I find an weatherproof sol
 Also, I've found a weird bug with the DHT22 sensor where it would stop recording after a while: the sensor is actually called AM3202 (which contains a DHT22 sensor inside). main difference is housing and included resistors. I followed wiring instructions for DHT22 and the sensor crashed after a while. Now I've rewired following the AM3202 instructions and it seems to work. will monitor for uptime...
 
 #### How to run:
+NOTE: 9/10 of probes failing/ hardware not detected/ weird bugs, at least in my case, where because wiring. If you also happen to have errors, first stop should be to check wiring!
+
 A couple things would need to be changed in the python script: 
 - Change the elasticsearch host ip
 - Set up a cron job. I tested every minute to start collecting documents in ES by setting the cron job (crontab -e) to * * * * * {{path to project directory}}/getInfo.py. in the future i plan on changing this to maybe every 5 minutes?
